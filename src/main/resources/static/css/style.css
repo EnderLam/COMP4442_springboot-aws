@@ -1,0 +1,21 @@
+body {
+    background-color: #f8f9fa;
+}
+#taskList .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.task-title {
+    font-weight: bold;
+}
+.task-desc {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+.task-status {
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 12px;
+    background-color: #e9ecef;
+}
