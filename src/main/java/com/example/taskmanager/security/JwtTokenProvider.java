@@ -70,5 +70,5 @@ public class JwtTokenProvider {
             .parseClaimsJws(token)
             .getBody();
     return claims.get("username", String.class);
- }
+}
 }

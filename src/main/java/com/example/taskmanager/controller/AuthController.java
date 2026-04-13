@@ -4,6 +4,7 @@ import com.example.taskmanager.dto.JwtResponse;
 import com.example.taskmanager.dto.LoginRequest;
 import com.example.taskmanager.dto.RegisterRequest;
 import com.example.taskmanager.security.JwtTokenProvider;
+import com.example.taskmanager.security.UserPrincipal;
 import com.example.taskmanager.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,20 +30,15 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        // Extract id from UserDetails – we need to get the user id.
-        // In a real scenario, we would have custom UserPrincipal that includes id.
-        // For simplicity, we fetch from database again or modify token provider to store id.
-        // I'll add a method to get id from authentication.
-        Long userId = getUserIdFromAuthentication(authentication);
-        return ResponseEntity.ok(new JwtResponse(jwt, userId, userDetails.getUsername(), userDetails.getUsername() + "@example.com"));
-    }
+public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest request) {
+    Authentication authentication = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+    );
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt = tokenProvider.generateToken(authentication);
+    UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+    return ResponseEntity.ok(new JwtResponse(jwt, userPrincipal.getId(), userPrincipal.getUsername(), userPrincipal.getEmail()));
+}
 
     private Long getUserIdFromAuthentication(Authentication authentication) {
         // If using UserPrincipal, cast and return id.
