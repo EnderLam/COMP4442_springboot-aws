@@ -22,10 +22,15 @@ public class Task {
 
     private LocalDateTime creationDate;
 
-    public Task(String title, String description, TaskStatus status) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public Task(String title, String description, TaskStatus status, User user) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.creationDate = LocalDateTime.now();
+        this.user = user;
     }
 }
