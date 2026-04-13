@@ -23,8 +23,8 @@
 
 ## Local Development
 1. Start PostgreSQL and Redis (or use H2 for quick test)
-2. Update `application.properties` with your DB/Redis credentials
-3. Run `./mvnw spring-boot:run`
+2. Update `application.properties` with your DB or Redis credentials
+3. Run `./gradlew bootRun`
 4. Access `http://localhost:8080`
 
 ## Deployment to AWS
